@@ -16,6 +16,10 @@ describe Oystercard do
     expect{ subject.top_up(1) }.to raise_error "Maximum balance #{maximum_balance} exceeded"
   end
 
+  it 'does not let a customer touch in without sufficient funds' do
+    expect{ subject.touch_in }.to raise_error "Insufficient funds to touch in"
+  end
+
   # describe 'topping up before (:all)' do
   #   :before(:all) do
   #     subject.top_up(Oystercard::MAXIMUM_BALANCE)
@@ -50,5 +54,4 @@ describe Oystercard do
     subject.touch_out
     expect(subject).not_to be_in_journey
   end
-
 end
