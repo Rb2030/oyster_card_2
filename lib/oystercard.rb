@@ -1,6 +1,6 @@
 class Oystercard
 
-  attr_reader :balance
+  attr_reader :balance, :travelling
 
   MAXIMUM_BALANCE = 90
 
@@ -16,5 +16,17 @@ class Oystercard
   def deduct(amount)
     fail "Insufficient funds" if @balance - amount < 0
     @balance -= amount
+  end
+
+  def in_journey?
+    @travelling
+  end
+
+  def touch_in
+    @travelling = true
+  end
+
+  def touch_out
+    @travelling = false
   end
 end
