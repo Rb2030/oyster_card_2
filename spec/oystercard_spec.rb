@@ -29,13 +29,13 @@ describe Oystercard do
 
   it 'should deduct fare from card' do
     subject.top_up(50)
-    subject.deduct(10)
-
-    expect(subject.balance).to eq(40)
+    minimum_charge = Oystercard::MINIMUM_CHARGE
+    expect { subject.touch_out }.to change{subject.balance}.by(-minimum_charge)
+    expect(subject.balance).to eq(47)
   end
 
   it 'should not deduct below 0' do
-    expect{ subject.deduct(1) }.to raise_error "Insufficient funds"
+    expect{ subject.touch_out }.to raise_error "Insufficient funds"
   end
 
   it 'starts not in a journey' do
@@ -52,6 +52,7 @@ describe Oystercard do
     subject.top_up(50)
     subject.touch_in
     subject.touch_out
+    #expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_CHARGE)
     expect(subject).not_to be_in_journey
   end
 end

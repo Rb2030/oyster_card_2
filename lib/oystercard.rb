@@ -4,6 +4,7 @@ class Oystercard
 
   MAXIMUM_BALANCE = 90
   MINIMUM_BALANCE = 1
+  MINIMUM_CHARGE = 3
 
   def initialize
     @balance = 0
@@ -29,6 +30,14 @@ class Oystercard
   end
 
   def touch_out
+    deduct(MINIMUM_CHARGE)
+    fail "Insufficient funds" if balance < 0
     @travelling = false
+  end
+
+private
+
+  def deduct(amount)
+    @balance -= amount
   end
 end
