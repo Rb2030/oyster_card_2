@@ -20,20 +20,6 @@ describe Oystercard do
     expect{ subject.touch_in }.to raise_error "Insufficient funds to touch in"
   end
 
-  # describe 'topping up before (:all)' do
-  #   :before(:all) do
-  #     subject.top_up(Oystercard::MAXIMUM_BALANCE)
-  # end
-  # end
-
-
-  it 'should deduct fare from card' do
-    subject.top_up(50)
-    minimum_charge = Oystercard::MINIMUM_CHARGE
-    expect { subject.touch_out }.to change{subject.balance}.by(-minimum_charge)
-    expect(subject.balance).to eq(47)
-  end
-
   it 'should not deduct below 0' do
     expect{ subject.touch_out }.to raise_error "Insufficient funds"
   end
@@ -42,17 +28,28 @@ describe Oystercard do
     expect(subject).not_to be_in_journey
   end
 
-  it 'can touch in' do
-    subject.top_up(50)
-    subject.touch_in
-    expect(subject).to be_in_journey
-  end
+  context 'after topping up' do
 
-  it 'can touch out' do
-    subject.top_up(50)
-    subject.touch_in
-    subject.touch_out
-    #expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_CHARGE)
-    expect(subject).not_to be_in_journey
+    before(:each) do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+    end
+
+    it 'can touch in' do
+      subject.touch_in
+      expect(subject).to be_in_journey
+    end
+
+    it 'should deduct fare from card' do
+      minimum_charge = Oystercard::MINIMUM_CHARGE
+      expect { subject.touch_out }.to change{subject.balance}.by(-minimum_charge)
+      expect(subject.balance).to eq(Oystercard::MAXIMUM_BALANCE - minimum_charge)
+    end
+
+    it 'can touch out' do
+      subject.touch_in
+      subject.touch_out
+      expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_CHARGE)
+      expect(subject).not_to be_in_journey
+    end
   end
 end
