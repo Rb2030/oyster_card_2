@@ -3,8 +3,8 @@ require "rspec/expectations"
 
 describe Oystercard do
 
-  let(:entry_station){ double(:station) }
-  let(:exit_station){ double(:station) }
+  let(:entry_station){ double(:station, zone: 1) }
+  let(:exit_station){ double(:station, zone: 3) }
   let(:journey){ { entry_station: entry_station, exit_station: exit_station } }
 
   it 'has a balance of zero' do
@@ -42,13 +42,11 @@ describe Oystercard do
     end
 
     it 'should deduct fare from card' do
-      minimum_charge = 3
-      expect { subject.touch_out(exit_station) }.to change{subject.balance}.by(-minimum_charge)
-      expect(subject.balance).to eq(Oystercard::MAXIMUM_BALANCE - minimum_charge)
+      expect { subject.touch_out(exit_station) }.to change{subject.balance}.by(-(2 + (exit_station.zone - entry_station.zone)))
     end
 
     it 'can touch out' do
-      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-3)
+      subject.touch_out(exit_station)
       expect(subject.current_journey).to eq nil
     end
   end

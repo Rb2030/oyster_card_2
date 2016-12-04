@@ -25,7 +25,15 @@ class Journey
 
   def finish(exit_station)
     @exit_station = exit_station
-    @fare = MINIMUM_FARE if complete?
+    @fare = zonal_fare if complete?
     self
   end
+
+  private
+
+  def zonal_fare
+    2 + (exit_station.zone - entry_station.zone).abs
+  end
+
+
 end
