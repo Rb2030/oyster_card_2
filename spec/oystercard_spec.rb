@@ -26,7 +26,6 @@ describe Oystercard do
   end
 
   it 'should not deduct below 0' do
-    #subject.top_up (3)
     expect{ subject.touch_in(entry_station) }.to raise_error "Insufficient funds to touch in"
   end
 
