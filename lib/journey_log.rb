@@ -1,19 +1,14 @@
 class JourneyLog
 
-  attr_reader :journey_log, :current_journey, :entry_station
+  attr_reader :journeys
 
   def initialize
-    @journey_log = []
-    @current_journey = nil
-    @entry_station = nil
+    @journeys = []
   end
 
-  def touch_in(entry_station)
-    @current_journey = Journey.new
-    @entry_station = entry_station
-    @journey_log << entry_station
+  def add(journey)
+   @journeys << journey
   end
-
 
 
 
