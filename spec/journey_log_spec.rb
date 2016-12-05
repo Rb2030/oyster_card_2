@@ -9,6 +9,6 @@ describe JourneyLog do
   end
 
   it 'it records that the card has touched in' do
-    expect(subject.journey_log).to eq current_journey
+    expect(subject.journey_log).to eq entry_station
   end
 end
