@@ -8,4 +8,7 @@ describe JourneyLog do
     expect(subject.current_journey).to eq nil
   end
 
+  it 'it records that the card has touched in' do
+    expect(subject.journey_log).to eq current_journey
+  end
 end
