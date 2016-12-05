@@ -31,9 +31,7 @@ class Journey
 
   private
 
-  def zonal_fare
-    2 + (exit_station.zone - entry_station.zone).abs
-  end
+  
 
 
 end
